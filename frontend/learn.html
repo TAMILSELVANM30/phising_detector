@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberGuard | Learning Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <style>
+        .accordion {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            cursor: pointer;
+            padding: 1.5rem;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: left;
+            outline: none;
+            font-size: 1.1rem;
+            transition: 0.4s;
+            border-radius: var(--radius-sm);
+            margin-bottom: 0.5rem;
+            font-family: inherit;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .active,
+        .accordion:hover {
+            background-color: rgba(94, 53, 177, 0.2);
+            border-color: var(--primary-light);
+        }
+
+        .accordion-panel {
+            padding: 0 1.5rem;
+            background-color: rgba(0, 0, 0, 0.2);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+            margin-bottom: 1rem;
+            margin-top: -0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: none;
+        }
+
+        .accordion-panel p {
+            margin: 1.5rem 0;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        .accordion-panel ul {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .accordion-panel li {
+            margin-bottom: 0.5rem;
+        }
+
+        .topic-icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="brand">
+            <ion-icon name="shield-checkmark"></ion-icon> Cyber<span>Guard</span>
+        </a>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="learn.html" class="active">Learning Center</a>
+            <a href="#" onclick="logout(); return false;" class="btn btn-secondary"
+                style="padding: 0.4rem 1rem;">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container animate-fade-in" style="padding-top: 2rem;">
+        <header style="text-align: center; margin-bottom: 3rem;">
+            <ion-icon name="school" style="font-size: 4rem; color: var(--primary); margin-bottom: 1rem;"></ion-icon>
+            <h2>Cyber Safety Learning Center</h2>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">Equip yourself with the knowledge to
+                identify and prevent online scams, harassment, and social engineering attacks.</p>
+        </header>
+
+        <div style="max-width: 800px; margin: 0 auto;">
+
+            <!-- Topic 1 -->
+            <button class="accordion">
+                <span><ion-icon name="heart-dislike" class="topic-icon" style="color: var(--accent-pink);"></ion-icon>
+                    Romance & Dating Scams</span>
+                <ion-icon name="chevron-down"></ion-icon>
+            </button>
+            <div class="accordion-panel">
+                <p>Romance scams occur when a criminal adopts a fake online identity to gain a victim's affection and
+                    trust. The scammer then uses the illusion of a romantic or close relationship to manipulate and/or
+                    steal from the victim.</p>
+
+                <h4 style="color: #fff; margin-bottom: 1rem;">Common Red Flags:</h4>
+                <ul>
+                    <li>They express strong emotions or declare love very quickly.</li>
+                    <li>They quickly ask to move the conversation off the dating app to WhatsApp or email.</li>
+                    <li>They claim to live, work, or travel outside the country (e.g., military, oil rig worker,
+                        international doctor).</li>
+                    <li>They make repeated excuses about why they cannot meet in person or join a video call.</li>
+                    <li>They eventually ask for money for an "emergency", travel expenses, or a lucrative "investment."
+                    </li>
+                </ul>
+
+                <div
+                    style="background: rgba(255, 64, 129, 0.1); border-left: 3px solid var(--accent-pink); padding: 1rem; margin-bottom: 1.5rem;">
+                    <strong>Safety Rule:</strong> Never send money, crypto, or gift cards to someone you have only
+                    communicated with online or by phone.
+                </div>
+            </div>
+
+            <!-- Topic 2 -->
+            <button class="accordion">
+                <span><ion-icon name="briefcase" class="topic-icon" style="color: var(--secondary);"></ion-icon> Fake
+                    Job Offers & Work-From-Home Scams</span>
+                <ion-icon name="chevron-down"></ion-icon>
+            </button>
+            <div class="accordion-panel">
+                <p>Scammers target job seekers with fake employment opportunities to steal personal information or
+                    money. These scams often promise high pay for easy work with flexible hours.</p>
+
+                <h4 style="color: #fff; margin-bottom: 1rem;">Common Red Flags:</h4>
+                <ul>
+                    <li>You receive a job offer on WhatsApp or Telegram from an unknown "recruiter".</li>
+                    <li>The pay is unusually high for simple tasks (like liking YouTube videos or leaving reviews).</li>
+                    <li>You are asked to pay an "onboarding fee", buy training software, or purchase equipment from a
+                        specific vendor using a fake check they provide.</li>
+                    <li>The communication is unprofessional and filled with grammatical errors.</li>
+                </ul>
+
+                <div
+                    style="background: rgba(0, 229, 255, 0.1); border-left: 3px solid var(--secondary); padding: 1rem; margin-bottom: 1.5rem;">
+                    <strong>Safety Rule:</strong> Legitimate employers will never ask you to pay them to secure a job or
+                    demand your banking passwords for direct deposit setup.
+                </div>
+            </div>
+
+            <!-- Topic 3 -->
+            <button class="accordion">
+                <span><ion-icon name="warning" class="topic-icon" style="color: var(--danger);"></ion-icon> Online
+                    Harassment & Sextortion</span>
+                <ion-icon name="chevron-down"></ion-icon>
+            </button>
+            <div class="accordion-panel">
+                <p>Sextortion is a serious crime where someone threatens to distribute private or sensitive material
+                    (often photos or videos) if you don't pay them or send them more content.</p>
+
+                <h4 style="color: #fff; margin-bottom: 1rem;">What to do if you are targeted:</h4>
+                <ul>
+                    <li><strong>Do not pay the ransom.</strong> Scammers rarely delete the material even if paid; they
+                        often just demand more money.</li>
+                    <li><strong>Stop communication immediately.</strong> Block the perpetrator across all platforms.
+                    </li>
+                    <li><strong>Lock down your accounts.</strong> Set all your social media profiles to the highest
+                        privacy settings.</li>
+                    <li><strong>Collect evidence.</strong> Take screenshots of the threats, profile names, and
+                        conversation history before blocking.</li>
+                    <li><strong>Report it.</strong> Report the account to the platform and contact local authorities or
+                        organizations like the Cyber Civil Rights Initiative.</li>
+                </ul>
+            </div>
+
+            <!-- Topic 4 -->
+            <button class="accordion">
+                <span><ion-icon name="globe" class="topic-icon" style="color: var(--primary-light);"></ion-icon>
+                    Phishing & Fake Domains</span>
+                <ion-icon name="chevron-down"></ion-icon>
+            </button>
+            <div class="accordion-panel">
+                <p>Phishing is a deceptive practice where attackers send fraudulent messages designed to trick you into
+                    revealing sensitive information or deploying malicious software on your infrastructure.</p>
+
+                <h4 style="color: #fff; margin-bottom: 1rem;">How to Spot Fake Links:</h4>
+                <ul>
+                    <li><strong>Look for Typo-squatting:</strong> Scammers use domains that look similar to real ones
+                        (e.g., <code>amzon.com</code> instead of <code>amazon.com</code>).</li>
+                    <li><strong>Check the Sender:</strong> Do not just look at the display name. Tap the name to see the
+                        actual email address it was sent from.</li>
+                    <li><strong>Don't Trust the Padlock:</strong> Just because a website has HTTPS (the padlock icon)
+                        does not mean it is safe—it just means the connection to the scam site is encrypted.</li>
+                    <li><strong>Beware of Urgency:</strong> Phishing emails often threaten account suspension or promise
+                        a reward if you act "immediately".</li>
+                </ul>
+            </div>
+
+            <!-- Topic 5: Understanding URLs & Trust Scores -->
+            <button class="accordion">
+                <span><ion-icon name="link" class="topic-icon" style="color: var(--accent-pink);"></ion-icon>
+                    Understanding URLs & Trust Scores</span>
+                <ion-icon name="chevron-down"></ion-icon>
+            </button>
+            <div class="accordion-panel">
+                <p>CyberGuard's AI analyzes links to give you a <strong>Trust Score (0-100)</strong>. A score below 40
+                    means the site is highly likely to be malicious. To understand how we calculate this, it helps to
+                    understand the anatomy of a URL.</p>
+
+                <h4 style="color: #fff; margin-bottom: 1rem;">The Anatomy of a URL:</h4>
+                <div
+                    style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-sm); font-family: monospace; color: #fff; font-size: 1rem; margin-bottom: 1.5rem; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+                    <span style="color: var(--primary-light);">https://</span><span
+                        style="color: var(--secondary);">www.amazon</span><span
+                        style="color: var(--accent-pink);">.com</span><span
+                        style="color: var(--text-muted);">/products/kindle</span>
+                </div>
+
+                <ul>
+                    <li><strong style="color: var(--primary-light);">Protocol (https://)</strong>: Tells the browser how
+                        to connect. 's' stands for secure (encrypted). CyberGuard deducts points if a site only uses
+                        'http'.</li>
+                    <li><strong style="color: var(--secondary);">Domain Name (amazon)</strong>: The actual name of the
+                        website. CyberGuard AI scans this for misleading hyphens (e.g., <code>ama-zon</code>) or
+                        suspicious keywords like "login", "free-gift", or "verify".</li>
+                    <li><strong style="color: var(--accent-pink);">Top-Level Domain (.com)</strong>: The extension.
+                        Scammers often use cheap or free extensions. CyberGuard flags unusual TLDs like
+                        <code>.xyz</code>, <code>.top</code>, or <code>.ml</code> as high-risk.</li>
+                    <li><strong style="color: var(--text-muted);">Path (/products/...)</strong>: Points to a specific
+                        page on that server. Scammers sometimes hide the real domain in the path to trick you!</li>
+                </ul>
+
+                <h4 style="color: #fff; margin-bottom: 1rem; margin-top: 2rem;">How CyberGuard Calculates Your Trust
+                    Score:</h4>
+                <p>Every link starts with a perfect <strong>100 Trust Score</strong>. Our AI then deducts points for
+                    suspicious patterns:</p>
+                <ul>
+                    <li><strong>-40 points</strong> if the link uses a raw IP address (like <code>192.168.1.1</code>)
+                        instead of a domain name.</li>
+                    <li><strong>-15 points (each)</strong> for manipulative keywords in the domain like "verify",
+                        "secure", or "prize".</li>
+                    <li><strong>-20 points</strong> for excessive hyphens designed to look like a complex subdomain.
+                    </li>
+                    <li><strong>-30 points</strong> for using cheap, spam-associated Top-Level Domains.</li>
+                    <li><strong>-10 points</strong> if the URL is excessively long, often used to hide the true
+                        destination.</li>
+                </ul>
+
+                <div
+                    style="background: rgba(94, 53, 177, 0.2); border-left: 3px solid var(--primary-light); padding: 1rem; margin-bottom: 1.5rem; margin-top: 1.5rem;">
+                    <strong>Education Sector Use Case:</strong> Always verify links sent to your student or faculty
+                    email claiming your "Office 365 Account is Expiring" or "Library Fines Due." Scammers frequently
+                    target EDU accounts!
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="auth.js"></script>
+    <script>
+        // Accordion functionality
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

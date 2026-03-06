@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberGuard | Analyze Text & URL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="brand">
+            <ion-icon name="shield-checkmark"></ion-icon> Cyber<span>Guard</span>
+        </a>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="text_scan.html">Text Scan</a>
+            <a href="url_scan.html" class="active">URL Scan</a>
+            <a href="image_scan.html">Image Scan</a>
+            <a href="#" onclick="logout(); return false;" class="btn btn-secondary"
+                style="padding: 0.4rem 1rem;">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container animate-fade-in" style="padding-top: 2rem;">
+
+        <div class="grid-2">
+
+            <!-- URL Scan Panel -->
+            <div class="glass-panel" style="position: relative;">
+                <h3 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem;">
+                    <ion-icon name="link" style="color: var(--secondary);"></ion-icon> Suspicious Link Scanner
+                </h3>
+
+                <form id="urlScanForm" onsubmit="handleScanUrl(event)">
+                    <div class="form-group">
+                        <input type="url" id="scanUrl" class="form-control"
+                            placeholder="e.g., https://bit.ly/claim-prize or http://amzon-update.com" required>
+                    </div>
+                    <button type="submit" class="btn btn-secondary" style="width: 100%;">
+                        Verify Link <ion-icon name="search"></ion-icon>
+                    </button>
+                </form>
+
+                <div id="urlLoader" class="scan-overlay">
+                    <div style="margin-bottom: 1rem; color: var(--secondary);"><ion-icon name="search-outline"
+                            style="font-size: 3rem;"></ion-icon></div>
+                    <h3>Verifying URL...</h3>
+                    <p style="font-size: 0.9rem;">Checking threat databases & domain structures</p>
+                    <div class="scan-line"></div>
+                </div>
+            </div>
+
+            <!-- Educational sidebar for URL scanning -->
+            <div class="glass-panel"
+                style="position: relative; background: rgba(0, 229, 255, 0.1); border-color: var(--secondary);">
+                <h3
+                    style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; color: var(--secondary);">
+                    <ion-icon name="shield-half-outline"></ion-icon> URL Anatomy Check
+                </h3>
+
+                <p style="font-size: 0.95rem; margin-bottom: 1rem;">Our AI generates a <strong>Trust Score</strong> by
+                    analyzing the anatomy of the URL you submit:</p>
+
+                <div
+                    style="background: rgba(0,0,0,0.3); padding: 0.8rem; border-radius: var(--radius-sm); font-family: monospace; color: #fff; font-size: 0.85rem; margin-bottom: 1.5rem; text-align: center; border: 1px solid rgba(255,255,255,0.1); word-break: break-all;">
+                    <span style="color: var(--primary-light);">https://</span><span
+                        style="color: var(--secondary);">www.amazon</span><span
+                        style="color: var(--accent-pink);">.com</span><span
+                        style="color: var(--text-muted);">/login</span>
+                </div>
+
+                <ul
+                    style="list-style-position: inside; padding-left: 0.5rem; color: var(--text-main); font-size: 0.9rem;">
+                    <li style="margin-bottom: 0.8rem;"><strong style="color: var(--primary-light);">Protocol:</strong>
+                        Missing HTTPS is suspicious.</li>
+                    <li style="margin-bottom: 0.8rem;"><strong style="color: var(--secondary);">Domain:</strong> Checked
+                        for IP addresses, typos, and manipulative keywords.</li>
+                    <li style="margin-bottom: 0.8rem;"><strong style="color: var(--accent-pink);">TLD:</strong>
+                        Spam-heavy extensions (.xyz, .top) lower Trust Scores.</li>
+                </ul>
+
+                <a href="learn.html"
+                    style="display: inline-block; margin-top: 1rem; color: var(--secondary); text-decoration: none; font-weight: 500; font-size: 0.9rem;">
+                    Read our deep-dive guide in the Learning Center &rarr;
+                </a>
+            </div>
+
+        </div>
+    </main>
+    <script src="script.js"></script>
+    <script src="auth.js"></script>
+</body>
+
+</html>

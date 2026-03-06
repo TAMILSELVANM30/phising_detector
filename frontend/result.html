@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberGuard | Analysis Result</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <style>
+        .result-header {
+            text-align: center;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .pulse-icon {
+            animation: pulseGlow 2s infinite;
+            border-radius: 50%;
+            display: inline-flex;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .trust-meter {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .trust-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(var(--secondary) 0%, rgba(255, 255, 255, 0.1) 0%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .trust-inner {
+            width: 130px;
+            height: 130px;
+            background: var(--bg-panel);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .trust-val {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 0.2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="brand">
+            <ion-icon name="shield-checkmark"></ion-icon> Cyber<span>Guard</span>
+        </a>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="text_scan.html">Text Scan</a>
+            <a href="url_scan.html">URL Scan</a>
+            <a href="#" onclick="logout(); return false;" class="btn btn-secondary"
+                style="padding: 0.4rem 1rem;">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container animate-fade-in">
+        <div class="glass-panel" style="max-width: 900px; margin: 0 auto;">
+
+            <div class="result-header">
+                <!-- dynamic icon insertion via JS -->
+                <div id="riskIcon" class="pulse-icon bg-low"><ion-icon name="shield-checkmark"
+                        style="font-size: 4rem; color: #fff;"></ion-icon></div>
+                <h2 id="riskLevel" style="margin-bottom: 0.5rem; font-size: 2.5rem;">Low Risk</h2>
+                <p id="riskSubtitle" style="font-size: 1.1rem;">This content appears safe to interact with.</p>
+            </div>
+
+            <div class="grid-2">
+
+                <!-- Metrics -->
+                <div>
+                    <h3 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <ion-icon name="speedometer-outline"></ion-icon> Assessment Metrics
+                    </h3>
+
+                    <div style="display: flex; justify-content: space-around; text-align: center; margin-bottom: 2rem;">
+
+                        <!-- Trust Score -->
+                        <div>
+                            <div class="trust-meter">
+                                <div id="trustCircle" class="trust-circle"
+                                    style="background: conic-gradient(var(--success) 90%, rgba(255,255,255,0.1) 0%);">
+                                    <div class="trust-inner">
+                                        <div id="trustValue" class="trust-val risk-low">90</div>
+                                        <div
+                                            style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">
+                                            Trust Score</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="meter-wrapper">
+                        <div class="meter-label">
+                            <span style="font-weight: 400; color: var(--text-muted); font-size: 0.9rem;">AI Confidence
+                                Meter</span>
+                            <span id="aiConfidenceText" style="color: var(--secondary);">95%</span>
+                        </div>
+                        <div class="meter-bg">
+                            <div id="aiConfidenceFill" class="meter-fill"
+                                style="width: 95%; background-color: var(--secondary); box-shadow: 0 0 10px var(--secondary-glow);">
+                            </div>
+                        </div>
+                        <p style="font-size: 0.8rem; margin-top: 0.5rem; color: rgba(255,255,255,0.4);">Indicates how
+                            confident the model is about its prediction.</p>
+                    </div>
+
+                </div>
+
+                <!-- Extracted & Reasons -->
+                <div>
+                    <div id="extractedSection" style="display: none; margin-bottom: 2rem;">
+                        <h3
+                            style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem; color: var(--primary-light);">
+                            <ion-icon name="scan-outline"></ion-icon> Extracted Text (OCR)
+                        </h3>
+                        <div id="extractedText"
+                            style="padding: 1rem; background: rgba(0,0,0,0.3); border-radius: var(--radius-sm); border-left: 3px solid var(--primary-light); font-size: 0.95rem; line-height: 1.5; word-wrap: break-word;">
+                            <!-- text here -->
+                        </div>
+                    </div>
+
+                    <h3
+                        style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem;">
+                        <ion-icon name="search-circle-outline"></ion-icon> Detection Reasons
+                    </h3>
+                    <ul id="reasonsList" style="list-style-position: inside; margin-bottom: 2rem; padding: 0;">
+                        <!-- dynamic items -->
+                    </ul>
+
+                    <!-- NEW: Dynamic URL Anatomy Breakdown -->
+                    <div id="urlAnatomySection" style="display: none; margin-bottom: 2rem;">
+                        <h3
+                            style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem; color: var(--accent-pink);">
+                            <ion-icon name="git-network-outline"></ion-icon> Link Anatomy Breakdown
+                        </h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
+                            Here is exactly how our AI breaks down your scanned link to calculate the trust score:
+                        </p>
+                        <div id="urlAnatomyContainer"
+                            style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); border-radius: var(--radius-sm); padding: 1rem;">
+                            <!-- injected via JS -->
+                        </div>
+                    </div>
+
+                    <h3
+                        style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem; color: var(--secondary);">
+                        <ion-icon name="information-circle-outline"></ion-icon> Safety Advice
+                    </h3>
+                    <ul id="adviceList" style="list-style-position: inside; padding: 0; margin-bottom: 2rem;">
+                        <!-- dynamic items -->
+                    </ul>
+
+                    <!-- NEW: Detailed Educational Explanation -->
+                    <div id="explanationBox"
+                        style="background: rgba(94, 53, 177, 0.1); border: 1px solid var(--primary-light); border-radius: var(--radius-sm); padding: 1.5rem; margin-top: 2rem;">
+                        <h3
+                            style="color: var(--primary-light); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <ion-icon name="school-outline"></ion-icon> Learn Why This Is Dangerous
+                        </h3>
+                        <p id="detailedExplanation"
+                            style="font-size: 0.95rem; line-height: 1.6; color: var(--text-main);">
+                            <!-- Explanation goes here -->
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05);">
+                <a href="dashboard.html" class="btn btn-secondary">
+                    <ion-icon name="arrow-back"></ion-icon> Return to Dashboard
+                </a>
+            </div>
+
+        </div>
+    </main>
+    <script src="script.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        // Load results on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.location.pathname.includes('result.html')) {
+                loadResults();
+            }
+        });
+    </script>
+</body>
+
+</html>

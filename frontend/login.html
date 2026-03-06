@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberGuard | Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <style>
+        .auth-container {
+            max-width: 450px;
+            margin: 4rem auto;
+        }
+
+        .auth-panel {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-panel::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: var(--primary-glow);
+            filter: blur(50px);
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .oauth-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            text-decoration: none;
+        }
+
+        .btn-google {
+            background: #fff;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .btn-google:hover {
+            background: #f1f1f1;
+        }
+
+        .btn-github {
+            background: #24292e;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-github:hover {
+            background: #1b1f23;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .divider:not(:empty)::before {
+            margin-right: .5em;
+        }
+
+        .divider:not(:empty)::after {
+            margin-left: .5em;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="brand">
+            <ion-icon name="shield-checkmark"></ion-icon> Cyber<span>Guard</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="register.html">Register</a>
+        </div>
+    </nav>
+
+    <main class="container auth-container animate-fade-in">
+        <div class="glass-panel auth-panel">
+            <h2 style="text-align: center; margin-bottom: 2rem;">Welcome Back</h2>
+
+            <form onsubmit="login(event)">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <label style="margin: 0;">Password</label>
+                        <a href="forgot_password.html"
+                            style="font-size: 0.85rem; color: var(--secondary); text-decoration: none;">Forgot
+                            Password?</a>
+                    </div>
+                    <input type="password" id="password" class="form-control" style="margin-top: 0.5rem;"
+                        placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                    Sign In <ion-icon name="log-in-outline"></ion-icon>
+                </button>
+            </form>
+            <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
+                Don't have an account? <a href="register.html" style="color: var(--secondary);">Register here</a>
+            </p>
+        </div>
+    </main>
+
+    <script src="auth.js"></script>
+</body>
+
+</html>

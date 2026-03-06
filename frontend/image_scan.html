@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberGuard | Image OCR Scan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <style>
+        .image-preview {
+            max-width: 100%;
+            max-height: 250px;
+            object-fit: contain;
+            border-radius: var(--radius-sm);
+            display: none;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="brand">
+            <ion-icon name="shield-checkmark"></ion-icon> Cyber<span>Guard</span>
+        </a>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="analyze.html">Text Scan</a>
+            <a href="image_scan.html" class="active">Image Scan</a>
+            <a href="#" onclick="logout(); return false;" class="btn btn-secondary"
+                style="padding: 0.4rem 1rem;">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container animate-fade-in" style="padding-top: 2rem; max-width: 800px;">
+
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h2>Photo Scam Detection</h2>
+            <p>Upload screenshots of WhatsApp, Instagram DMs, fake payment receipts, or job offers.</p>
+        </div>
+
+        <div class="glass-panel" id="uploadPanel" style="position: relative;">
+
+            <form id="imageScanForm" onsubmit="handleScanImage(event)">
+
+                <div class="upload-area" id="dropArea" onclick="document.getElementById('fileInput').click()">
+                    <img id="imgPreview" class="image-preview" src="" alt="Preview">
+                    <div id="uploadPlaceholder">
+                        <ion-icon name="cloud-upload" class="upload-icon"></ion-icon>
+                        <h3 class="upload-text">Drag & Drop Image Here</h3>
+                        <p class="upload-hint">or click to browse your files (PNG, JPG, JPEG)</p>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/png, image/jpeg, image/jpg"
+                        onchange="handleFileSelect(this)">
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" id="scanBtn" disabled style="min-width: 250px;">
+                        Extract Text & Scan Image <ion-icon name="aperture"></ion-icon>
+                    </button>
+                </div>
+            </form>
+
+            <div id="imageLoader" class="scan-overlay">
+                <div style="margin-bottom: 1rem; color: var(--secondary);"><ion-icon name="scan-outline"
+                        style="font-size: 3rem;"></ion-icon></div>
+                <h3>Extracting Text (OCR)...</h3>
+                <p style="font-size: 0.9rem;">Converting image to text and analyzing</p>
+                <div class="scan-line"></div>
+            </div>
+
+        </div>
+    </main>
+    <script src="script.js"></script>
+    <script src="auth.js"></script>
+</body>
+
+</html>
