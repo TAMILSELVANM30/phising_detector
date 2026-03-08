@@ -1,229 +1,86 @@
 import re
+import random
+
+# A comprehensive list of FAQs and intents related to Cyber Safety, Security, and General Inquiries
+INTENT_PATTERNS = [
+    # --- Greetings & Introduction ---
+    (re.compile(r'\b(hello|hi|hey|start|greetings|howdy)\b', re.IGNORECASE), "Hello there! I'm Aura, your Cyber Safety Teacher. Think of me as a friendly guide who can help you spot online tricks. What would you like to learn about today? You can ask me about fake links, romance scams, or how to secure your accounts."),
+    (re.compile(r'\b(help|assist|what can you do|how do i use|guide me)\b', re.IGNORECASE), "I'm here to help make the internet less confusing! Try asking me a direct question like:\n- What is a phishing link?\n- How do I know if a job offer is fake?\n- What should I do if my account is hacked?"),
+    (re.compile(r'\b(who are you|what are you|your name|are you ai|are you real|creator)\b', re.IGNORECASE), "I'm **CyberAura**, an artificial intelligence built to be your personal Cyber Safety Teacher. I don't just find scams—I want to teach you exactly how they work so you never get tricked in the real world. Ask me a question!"),
+
+    # --- Core Threats: Phishing & Scams ---
+    (re.compile(r'\b(scam|phishing|phish|what is phishing|fake email)\b', re.IGNORECASE), "**What is Phishing?** \n\nThink of phishing like someone wearing a mask. A scammer sends you a message pretending to be someone you trust—like your bank, Amazon, or even your boss—and tries to trick you into handing over your password or money. \n\n**My Advice:** Never click links in random emails or texts. If your bank needs you, type their website directly into your browser yourself!"),
+    (re.compile(r'\b(smishing|fake text|text message scam|sms scam)\b', re.IGNORECASE), "**What is Smishing?** \n\nSmishing is just phishing sent through SMS text messages! Scammers might text you saying your package is delayed and ask you to click a link to pay a 'delivery fee'.\n\n**My Advice:** Never click links in unexpected texts. Check the official delivery company's website directly with your tracking number."),
+    (re.compile(r'\b(vishing|phone scam|caller id spoofing|fake call)\b', re.IGNORECASE), "**What is Vishing?** \n\nVishing is Voice Phishing. This is when scammers call you, often pretending to be the IRS, your bank, or tech support, demanding immediate payment or personal details.\n\n**My Advice:** If a caller asks for your password or demands payment with gift cards, hang up! Call the organization back on exploring their real number."),
+    (re.compile(r'\b(job|work from home|part time|hiring|recruiter|salary|daily income|data entry|easy money)\b', re.IGNORECASE), "**Fake Job Offers** \n\nIf a strange number texts you offering $200 a day for 'easy remote work', it is a trap. They want to steal your personal info or make you pay an 'onboarding fee'.\n\n**My Advice:** Real jobs won't hire you through random WhatsApp texts. And a real employer will never ask *you* to pay *them* to start working."),
+    (re.compile(r'\b(romance|dating|tinder|bumble|love|boyfriend|girlfriend|sugar daddy|military doctor)\b', re.IGNORECASE), "**Romance Scams** \n\nThese break my heart. Scammers will spend weeks talking to you on dating apps or Instagram, making you fall in love with them. But they will always have an excuse for why they can't meet in person. Eventually, they will have a 'medical emergency' and beg you for money.\n\n**My Advice:** Never, ever send money to someone you have not met in real life."),
+    (re.compile(r'\b(crypto|bitcoin|investment|trading|forex|returns|guaranteed profit|pig butchering)\b', re.IGNORECASE), "**Fake Investments (Crypto Scams)** \n\nHas a stranger ever texted you 'by accident', become your friend, and then told you they make huge money trading crypto? That is a scam. They will show you a fake website where it looks like you are making money, but when you try to take your cash out, it's gone.\n\n**My Advice:** Real investments do not happen through WhatsApp."),
+    (re.compile(r'\b(tech support|microsoft|apple support|virus popup|computer infected|remote access|anydesk)\b', re.IGNORECASE), "**Tech Support Scams** \n\nIf a scary red box pops up on your computer saying 'WARNING: You have a virus, call this number!', do not call it. It is a trick.\n\n**My Advice:** Real companies like Microsoft and Apple will *never* call you out of nowhere to fix your computer. Just close the window or restart your computer."),
+    (re.compile(r'\b(iphone|lottery|giveaway|won a prize|lucky winner|claim prize)\b', re.IGNORECASE), "**Fake Prize Scams** \n\nDid you get a text saying you won a free iPhone or a massive lottery? Notice how they always ask you to click a link or pay a small 'shipping fee' to get your free prize?\n\n**My Advice:** If you didn't buy a ticket, you didn't win the lottery. Never pay money to receive a 'free' prize."),
+    (re.compile(r'\b(urgent|immediate action|account suspended|verify account)\b', re.IGNORECASE), "**Urgent Action Scams**\n\nScammers use urgency to make you panic so you don't think clearly. They will say your account is suspended or a large charge is coming.\n\n**My Advice:** Take a deep breath. Don't click their links. Go to the actual website (like paypal.com) to check your account status."),
+
+    # --- Passwords & Accounts ---
+    (re.compile(r'\b(password|secure|password manager|strong password)\b', re.IGNORECASE), "**How to make strong passwords:** \n\nThe biggest mistake people make is using the same password everywhere. If one website gets hacked, the scammers try that password everywhere!\n\n**My Advice:** Make your passwords long, like a sentence (e.g., 'MyCatEats2Apples!'). Or, better yet, use a Password Manager to create and save unique passwords for every site."),
+    (re.compile(r'\b(2fa|mfa|two factor|authenticator|sms code|otp)\b', re.IGNORECASE), "**What is Two-Factor Authentication (2FA)?** \n\n2FA is a second lock on your digital door. Even if a hacker guesses your password, they still need the special code sent to your phone or authenticator app to get in.\n\n**My Advice:** Turn on 2FA for your email, bank, and social media. Never share your 2FA codes with anyone!"),
+    (re.compile(r'\b(hack|stolen|identity|breach|lost account|locked out|data breach)\b', re.IGNORECASE), "**What to do if you are hacked:** \n\nStay calm! If you can still log in, change your password immediately and log out of all sessions. If locked out, use the website's 'Recover Account' page.\n\n**My Advice:** Warn your friends! Hackers will use your stolen account to message your friends and try to scam them."),
+
+    # --- Privacy & Harassment ---
+    (re.compile(r'\b(harass|stalk|bully|threaten|cyberbullying)\b', re.IGNORECASE), "**Dealing with Online Harassment** \n\nNobody deserves to be bullied online.\n\n**My Advice:** Do not engage with the bully. Block their accounts immediately. Take screenshots of their messages as proof, and report them to the platform. If you feel physically unsafe, contact local authorities."),
+    (re.compile(r'\b(blackmail|photos|nudes|sextortion|expose)\b', re.IGNORECASE), "**Online Blackmail (Sextortion)** \n\nThis is very serious. If someone is threatening to post private photos of you unless you pay them, it is incredibly scary.\n\n**My Advice:** Do not pay them. If you pay, they will just demand more. Take screenshots of their threats, block them, deactivate your social media temporarily to stop them from reaching your friends, and contact the police."),
+    (re.compile(r'\b(doxxing|doxed|dox|leaked address)\b', re.IGNORECASE), "**What is Doxxing?** \n\nDoxxing is when someone malicious publishes your private information (like your real name, home address, or phone number) online without your permission.\n\n**My Advice:** Limit the personal info you share publicly on social media. Use privacy settings to restrict who can see your profile."),
+    (re.compile(r'\b(deepfake|voice clone|ai generated|fake video|fake audio|ai voice)\b', re.IGNORECASE), "**Deepfakes and AI Voices** \n\nScammers can now use AI to copy what your friends or family sound like! They might call sounding like your child, crying that they need money.\n\n**My Advice:** If a loved one calls begging for money from an unknown number, hang up and call them back on their real, saved number to verify."),
+
+    # --- Malware & Technical Threats ---
+    (re.compile(r'\b(malware|virus|trojan|worm|infected)\b', re.IGNORECASE), "**What is Malware?** \n\nMalware stands for 'Malicious Software'. It's bad code that gets onto your device to break things or steal your data.\n- **Virus:** Infects your computer when you open it.\n- **Trojan:** Pretends to be a useful program but secretly installs a backdoor.\n\n**My Advice:** Never download apps from random websites. Only use official app stores."),
+    (re.compile(r'\b(ransomware|ransom|files locked|encrypting|pay to unlock)\b', re.IGNORECASE), "**What is Ransomware?** \n\nRansomware is a terrible type of malware that locks all the files on your computer. The hacker demands a 'ransom' in Bitcoin to unlock them.\n\n**My Advice:** The best defense is to always backup your important files on an external hard drive or cloud. And be careful opening email attachments!"),
+    (re.compile(r'\b(spyware|keylogger|tracking me|camera hacked|stalkerware)\b', re.IGNORECASE), "**What is Spyware/Stalkerware?** \n\nSpyware secretly watches what you do. A **Keylogger** records every key you press (including passwords). **Stalkerware** is often installed secretly by abusive partners on phones to track location.\n\n**My Advice:** Keep your phone locked with a strong PIN. Look out for your battery draining unusually fast, which can be a sign of hidden apps."),
+    (re.compile(r'\b(adware|popups|too many ads|browser hijacked)\b', re.IGNORECASE), "**What is Adware?** \n\nAdware bombards you with pop-up ads or redirects your internet browser to weird search engines to make money for the creator.\n\n**My Advice:** Use a reputable Adblocker (like uBlock Origin) and uninstall any browser extensions you don't recognize."),
+    (re.compile(r'\b(botnet|ddos|denial of service|website down)\b', re.IGNORECASE), "**What is a DDoS Attack?** \n\nA **Botnet** is an army of hacked computers (zombies). The hacker uses this army to flood a website with millions of fake clicks all at once, crashing the website. This is a **DDoS** attack.\n\n**My Advice:** Keep your devices updated so your computer doesn't get tricked into joining a botnet."),
+    (re.compile(r'\b(zero day|0 day|0day|zero-day|exploit)\b', re.IGNORECASE), "**What is a Zero-Day Vulnerability?** \n\nA 'Zero-Day' is a completely brand new flaw in software that the creators have had 'zero days' to fix before hackers found it.\n\n**My Advice:** You can't perfectly stop a zero-day attack, which is why it is critical to always install 'Security Updates' on your phone and computer the moment they appear."),
+
+    # --- Networking & Infrastructure ---
+    (re.compile(r'\b(http|https|padlock|secure connection|ssl|tls)\b', re.IGNORECASE), "**What is HTTPS?** \n\nHTTPS (with the 'S' for Secure) means the connection between your computer and the website is locked. \n\n**My Advice:** Just because a website has HTTPS or a 'padlock' icon does NOT mean it's safe! Scammers can easily buy HTTPS for their fake websites. Always double-check the spelling of the domain."),
+    (re.compile(r'\b(wifi|public wifi|coffee shop internet|cafe wifi|airport wifi)\b', re.IGNORECASE), "**Public Wi-Fi Dangers** \n\nOpen Wi-Fi at coffee shops or airports makes it easy for hackers on the same network to intercept your internet traffic if it isn't encrypted.\n\n**My Advice:** Never log into your bank or enter credit card details on public Wi-Fi unless you are using a VPN."),
+    (re.compile(r'\b(vpn|virtual private network|hide ip|ip address|what is ip)\b', re.IGNORECASE), "**What is a VPN?** \n\nA Virtual Private Network (VPN) creates a secure, encrypted tunnel between your device and the internet. It hides your real IP address (which shows your rough location).\n\n**My Advice:** VPNs are great for privacy on public Wi-Fi, but remember that the VPN provider can see everything you do, so only use trusted, paid VPNs."),
+    (re.compile(r'\b(firewall|network defense)\b', re.IGNORECASE), "**What is a Firewall?** \n\nThink of a firewall as a security guard standing at the door of your computer. It checks all the internet traffic trying to come in and go out, and blocks anything dangerous.\n\n**My Advice:** Leave the default firewall turned on in Windows or Mac settings!"),
+    (re.compile(r'\b(cookie|tracking cookie|cache)\b', re.IGNORECASE), "**What are Online Cookies?** \n\nCookies are tiny text files websites save on your computer to remember you. 'Tracking Cookies' follow you across the internet to figure out what ads to show you.\n\n**My Advice:** You don't need to fear all cookies. But you can set your browser to 'Block Third-Party Cookies' to stop creepy ad tracking."),
+    (re.compile(r'\b(encryption|encrypted|e2ee|end to end)\b', re.IGNORECASE), "**What is End-to-End Encryption (E2EE)?** \n\nIf an app like WhatsApp uses E2EE, your message is locked on your phone and can ONLY be unlocked by your friend's phone. Even the company that owns the app cannot read your messages!\n\n**My Advice:** Always use E2EE messaging apps (like Signal, WhatsApp, iMessage) for private conversations."),
+
+    # --- Social Media & Devices ---
+    (re.compile(r'\b(facebook|instagram|social media|twitter|tiktok|snapchat)\b', re.IGNORECASE), "**Social Media Safety** \n\nScammers often hijack real accounts or clone your friend's profiles to ask you for money or to click a link.\n\n**My Advice:** Set your profile to private. Don't accept friend requests from people you don't know, or from a friend you are *already* friends with (it's probably a clone!)."),
+    (re.compile(r'\b(smartphone|mobile|android|iphone|cell phone)\b', re.IGNORECASE), "**Mobile Security** \n\nOur phones are our lifelines. \n\n**My Advice:** 1) Keep your OS updated. 2) Only download apps from official stores. 3) Never root/jailbreak your phone as it breaks security. 4) Use a strong passcode, not a simple pattern."),
+
+    # --- Platform Features ---
+    (re.compile(r'\b(confidence meter|ai confidence|what is confidence)\b', re.IGNORECASE), "**The AI Confidence Meter** is a feature on our Results Page. While the Trust Score tells you *how dangerous* a message is, the Confidence Meter tells you *how sure the AI is* about its decision! \n\nIf the AI sees 4 clear scam keywords, the Confidence Meter will be very high (95%+)."),
+    (re.compile(r'\b(what is trust score|safety score|how does scoring work|score meaning)\b', re.IGNORECASE), "**Your Trust Score (or Safety Score)** starts at 100% (Perfectly Safe).\nWhenever our AI finds something suspicious—like a fake URL or urgent scam words—it subtracts points. \n\n- **60-100%**: Low Risk\n- **40-59%**: Medium Risk\n- **0-39%**: High Risk (Delete immediately!)"),
+    (re.compile(r'\b(how to use|scan image|scan text|dashboard|features)\b', re.IGNORECASE), "**Welcome to the CyberGuard Platform!** Here is how you use it:\n\n1. **Text Scanner**: Paste any weird email or SMS you receive.\n2. **URL Scanner**: Paste a suspicious link before clicking it to check if it's safe.\n3. **Image Scanner**: Upload a screenshot of a weird DM, and the app reads the text inside it to catch scams!"),
+
+    # --- Broad Catchalls (Placed Near the Bottom) ---
+    (re.compile(r'\b(safe|safety|protect|protection|secure myself)\b', re.IGNORECASE), "**General Safety Rule of Thumb:** \n\n1. **Stop & Think:** Before clicking any link or downloading a file.\n2. **Verify:** If someone asks for money or passwords, call them directly to confirm.\n3. **Use 2FA:** Protect your important accounts with Two-Factor Authentication.\n4. **Update:** Keep your devices and apps aggressively updated!"),
+    (re.compile(r'\b(thanks|thank you|ty|appreciate|helpful)\b', re.IGNORECASE), "You're very welcome! I'm always here to help you stay safe online. Is there anything else you'd like to check?"),
+    (re.compile(r'\b(bye|goodbye|see ya|cya)\b', re.IGNORECASE), "Stay safe out there in the digital world! Let me know if you need help analyzing suspicious links or messages in the future. Goodbye!"),
+]
+
+# A robust set of fallback responses if the intent matching doesn't find a direct keyword hit
+DEFAULT_RESPONSES = [
+    "I want to make sure I am giving you the easiest answer! I am trained mostly on how to spot scams and protect your accounts. If you don't know what to ask, try: 'What is a fake job offer?' or 'How do I know if this link is safe?'",
+    "Think of me as your online safety teacher! I don't know the answer to every riddle, but I am an expert in stopping scammers. Could you ask me about 'Public Wi-Fi dangers', 'Crypto Scams', or 'Romance Scams' instead?",
+    "Hmm, that's a bit outside my lesson plan! Could you ask your question in a slightly simpler way? I love answering questions about online safety and how to protect yourself on social media.",
+    "I'm specifically programmed to help you deal with cyber threats, scams, and digital safety. To get the best help, ask me about 'Two-Factor Authentication', 'Phishing', or 'Malware'."
+]
 
 def get_chatbot_response(message):
     """
-    A robust rule-based intent matching engine tailored for Women's Cyber Safety and General Phishing Education.
+    An ultra-efficient, fully local, hardcoded rule-based NLP engine.
+    It iterates through a comprehensive list of pre-compiled regular expressions 
+    to match the user's intent to the appropriate educational response.
     """
-    msg = message.lower()
+    msg = message.lower().strip()
     
-    # INTENT: Romance Scams
-    import random
-    
-    # EXACT PHRASING MATCHES (Highest Priority)
-    if msg == "hello" or msg == "hi" or msg == "hey" or msg == "start":
-        return "Hello there! I'm Aura, your Cyber Safety Teacher. Think of me as a friendly guide who can help you spot online tricks. What would you like to learn about today? You can ask me about fake links, romance scams, or how to secure your accounts."
-        
-    if msg == "help":
-        return "I'm here to help make the internet less confusing! Try asking me a direct question like:\n- What is a phishing link?\n- How do I know if a job offer is fake?\n- What should I do if my account is hacked?"
-
-    # WHAT IS A SCAM / PHISHING (Basic Education)
-    if any(keyword in msg for keyword in ['what is a scam', 'what is phishing', 'what is phish', 'explain scam']):
-        return (
-            "**What is Phishing?** \n\n"
-            "Think of phishing like someone wearing a mask. A scammer sends you a message pretending to be someone you trust—like your bank, Amazon, or even your boss—and tries to trick you into handing over your password or money. \n\n"
-            "**My Advice:** Never click links in random emails or texts. If your bank needs you, type their website directly into your browser yourself!"
-        )
-
-    # INTENT: Deepfakes & AI Voice Cloning
-    if any(keyword in msg for keyword in ['deepfake', 'voice clone', 'ai generated', 'fake video', 'ai image', 'ai voice']):
-        return (
-            "**Deepfakes and AI Voices** \n\n"
-            "Nowadays, scammers can use computer programs to copy exactly what your friends or family sound like! They might call you sounding like your child, crying that they need bail money.\n\n"
-            "**My Advice:** If a loved one calls begging for money from a weird number, hang up immediately! Call them back on the real number you have saved in your phone to check if they are actually okay."
-        )
-
-    # INTENT: Crypto & Investment Scams (Pig Butchering)
-    elif any(keyword in msg for keyword in ['crypto', 'bitcoin', 'investment', 'trading', 'forex', 'returns', 'guaranteed profit']):
-        return (
-            "**Fake Investments (Crypto Scams)** \n\n"
-            "Has a stranger ever texted you 'by accident', become your friend, and then told you they make huge money trading crypto? That is a scam. They will show you a fake website where it looks like you are making money, but when you try to take your cash out, it's gone.\n\n"
-            "**My Advice:** Real investments do not happen through WhatsApp or random text messages. Keep your money safe in real banks."
-        )
-
-    # INTENT: Tech Support Scams
-    elif any(keyword in msg for keyword in ['tech support', 'microsoft', 'apple support', 'virus popup', 'computer infected', 'remote access', 'anydesk']):
-        return (
-            "**Tech Support Scams** \n\n"
-            "If a scary red box pops up on your computer saying 'WARNING: You have a virus, call this number!', do not call it. It is a trick.\n\n"
-            "**My Advice:** Real companies like Microsoft and Apple will *never* call you out of nowhere to fix your computer. Just close the window or restart your computer."
-        )
-
-    # INTENT: Giveaways & Lottery Scams
-    elif any(keyword in msg for keyword in ['iphone', 'lottery', 'giveaway', 'won a prize', 'lucky winner', 'claim prize']):
-        return (
-            "**Fake Prize Scams** \n\n"
-            "Did you get a text saying you won a free iPhone or a massive lottery? Notice how they always ask you to click a link or pay a small 'shipping fee' to get your free prize?\n\n"
-            "**My Advice:** If you didn't buy a ticket, you didn't win the lottery. Never pay money to receive a 'free' prize."
-        )
-
-    # INTENT: Password Security
-    elif any(keyword in msg for keyword in ['password', 'secure', '2fa', 'authenticator', 'mfa']):
-        return (
-            "**How to make strong passwords:** \n\n"
-            "The biggest mistake people make is using the same password for their email and their bank. If one website gets hacked, the scammers try that password everywhere!\n\n"
-            "**My Advice:** Make your passwords long, like a sentence (e.g., 'MyCatEats2Apples!'). And always turn on 'Two-Factor Authentication' so even if they guess your password, they can't get in without your phone."
-        )
-
-    # INTENT: Romance Scams
-    elif any(keyword in msg for keyword in ['romance', 'dating', 'tinder', 'bumble', 'love', 'boyfriend', 'girlfriend', 'sugar daddy', 'military doctor']):
-        return (
-            "**Romance Scams** \n\n"
-            "These break my heart. Scammers will spend weeks talking to you on dating apps or Instagram, making you fall in love with them. But they will always have an excuse for why they can't meet in person or do a video call. Eventually, they will have a 'medical emergency' and beg you for money.\n\n"
-            "**My Advice:** Never, ever send money, gift cards, or crypto to someone you have not met in real life."
-        )
-        
-    # INTENT: Job Offer Scams
-    elif any(keyword in msg for keyword in ['job', 'work from home', 'part time', 'hiring', 'recruiter', 'salary', 'daily income', 'data entry']):
-        return (
-            "**Fake Job Offers** \n\n"
-            "If a strange number texts you offering $200 a day for 'easy remote work' like just liking YouTube videos, it is a trap. They want to steal your personal info or make you pay an 'onboarding fee'.\n\n"
-            "**My Advice:** Real jobs won't hire you through random WhatsApp texts. And a real employer will never ask *you* to pay *them* to start working."
-        )
-        
-    # INTENT: Online Harassment / Cyberstalking
-    elif any(keyword in msg for keyword in ['harass', 'stalk', 'bully', 'threaten', 'blackmail', 'photos', 'nudes', 'sextortion']):
-        return (
-            "**Online Blackmail (Sextortion)** \n\n"
-            "This is very serious. If someone is threatening you, saying they will post private photos of you online unless you pay them, it is incredibly scary. \n\n"
-            "**My Advice:** Do not pay them. If you pay, they will just demand more money tomorrow. Take screenshots of their threats, block their account, and contact the police."
-        )
-
-    # INTENT: Identity Theft / Hacked Account
-    elif any(keyword in msg for keyword in ['hack', 'stolen', 'identity', 'breach', 'lost account', 'locked out']):
-        return (
-            "**What to do if you are hacked:** \n\n"
-            "Stay calm! If you can still log in, change your password immediately. If you are totally locked out, use the website's 'Recover Account' page.\n\n"
-            "**My Advice:** Warn your friends! Hackers will use your stolen account to message your friends and try to scam them, because your friends trust your name."
-        )
-
-    # --- MASSIVE CYBERSECURITY DICTIONARY ---
-
-    # HTTP vs HTTPS
-    elif any(keyword in msg for keyword in ['http', 'https', 'padlock', 'secure connection', 'ssl', 'tls']):
-        return (
-            "**What is HTTPS?** \n\n"
-            "HTTPS (with the 'S' for Secure) means the connection between your computer and the website is locked. If you type in a password, hackers on the same Wi-Fi can't read it.\n\n"
-            "**My Advice:** Just because a website has HTTPS or a 'padlock' icon does NOT mean it's safe! Scammers can easily buy HTTPS for their fake websites. Always check the spelling of the domain."
-        )
-
-    # Malware General (Virus, Trojan, Worm)
-    elif any(keyword in msg for keyword in ['malware', 'virus', 'trojan', 'worm']):
-        return (
-            "**What is Malware?** \n\n"
-            "Malware stands for 'Malicious Software'. It's bad code that gets onto your device to break things or steal your data.\n"
-            "- **Virus:** Attaches to a clean file and infects your computer when you open it.\n"
-            "- **Trojan:** Pretends to be a useful program (like a free game) but secretly installs a backdoor for hackers.\n\n"
-            "**My Advice:** Never download apps or programs from random websites. Only use the official App Store or Google Play Store."
-        )
-
-    # Ransomware
-    elif any(keyword in msg for keyword in ['ransomware', 'ransom', 'files locked', 'encrypting my files']):
-        return (
-            "**What is Ransomware?** \n\n"
-            "Ransomware is a terrible type of malware that locks all the files, photos, and documents on your computer. The hacker then tells you they will only unlock them if you pay a 'ransom' in Bitcoin.\n\n"
-            "**My Advice:** The best defense is to always have a backup of your important files on an external hard drive or in the cloud. And be careful opening email attachments!"
-        )
-
-    # Spyware & Keyloggers
-    elif any(keyword in msg for keyword in ['spyware', 'keylogger', 'tracking me', 'camera hacked']):
-        return (
-            "**What is Spyware?** \n\n"
-            "Spyware secretly watches what you do. A **Keylogger** is a specific type of spyware that records every single key you press—including your passwords!\n\n"
-            "**My Advice:** Only install software from official sources, and keep your computer's antivirus program turned on. Cover your webcam when you aren't using it."
-        )
-
-    # Adware
-    elif any(keyword in msg for keyword in ['adware', 'popups', 'too many ads', 'browser hijacked']):
-        return (
-            "**What is Adware?** \n\n"
-            "Adware isn't usually extremely dangerous, but it is annoying. It's software that bombards you with pop-up ads or redirects your internet browser to strange search engines to make money for the creator.\n\n"
-            "**My Advice:** Use a good Adblocker (like uBlock Origin) and uninstall any weird browser extensions you don't recognize."
-        )
-
-    # Cookies
-    elif any(keyword in msg for keyword in ['cookie', 'tracking cookie', 'cache']):
-        return (
-            "**What are Online Cookies?** \n\n"
-            "Cookies are tiny text files websites save on your computer. They help the website remember you (so you don't have to log in every time you open a new tab). But 'Tracking Cookies' follow you across the internet to figure out what ads to show you.\n\n"
-            "**My Advice:** You don't need to fear all cookies. But you can set your browser to 'Block Third-Party Cookies' to stop creepy tracking."
-        )
-
-    # Firewalls
-    elif any(keyword in msg for keyword in ['firewall', 'network defense']):
-        return (
-            "**What is a Firewall?** \n\n"
-            "Think of a firewall as a security guard standing at the door of your computer. It checks all the internet traffic trying to come in and go out, and blocks anything that looks dangerous.\n\n"
-            "**My Advice:** Leave the default firewall turned on in Windows or Mac settings! It is your first line of defense."
-        )
-
-    # Encryption / E2EE
-    elif any(keyword in msg for keyword in ['encryption', 'encrypted', 'e2ee', 'end to end']):
-        return (
-            "**What is End-to-End Encryption (E2EE)?** \n\n"
-            "If an app like WhatsApp uses E2EE, it means your message is locked on your phone and can ONLY be unlocked by your friend's phone. Even the company that owns the app cannot read your messages!\n\n"
-            "**My Advice:** Use encrypted messaging apps (like Signal or WhatsApp) for private conversations."
-        )
-
-    # IP Addresses
-    elif any(keyword in msg for keyword in ['ip address', 'my ip', 'what is ip']):
-        return (
-            "**What is an IP Address?** \n\n"
-            "An IP address is the digital 'home address' of your internet connection. Whenever you visit a website, the website needs your IP address to know where to send the page back to.\n\n"
-            "**My Advice:** Your IP address reveals a rough estimate of what city you live in. If you want to hide it, use a Virtual Private Network (VPN)."
-        )
-
-    # Botnets / DDoS
-    elif any(keyword in msg for keyword in ['botnet', 'ddos', 'denial of service', 'website down']):
-        return (
-            "**What are Botnets and DDoS Attacks?** \n\n"
-            "A **Botnet** is an army of hacked computers acting like zombies controlled by a hacker. The hacker uses this army to flood a website with millions of fake clicks all at once, causing the website to crash. This is called a **DDoS** attack.\n\n"
-            "**My Advice:** This mostly affects big companies, but keeping your devices updated ensures your computer doesn't get tricked into joining a zombie botnet."
-        )
-        
-    # Zero-Day
-    elif any(keyword in msg for keyword in ['zero day', '0 day', '0day', 'zero-day']):
-        return (
-            "**What is a Zero-Day Vulnerability?** \n\n"
-            "Imagine a thief discovering a secret broken window on a house, but the owner doesn't know about it yet. A 'Zero-Day' is a completely brand new flaw in software that the creators have had 'zero days' to fix.\n\n"
-            "**My Advice:** You can't perfectly stop a zero-day attack, which is why it is critical to always install 'Security Updates' on your phone and computer the moment they become available."
-        )
-
-    # CHAT BOT PERSONALITY
-    elif any(keyword in msg for keyword in ['who are you', 'what are you', 'your name', 'are you ai', 'are you a real person']):
-        return (
-            "I'm **CyberAura**, an artificial intelligence built to be your personal Cyber Safety Teacher. "
-            "I don't just find scams—I want to teach you exactly how they work so you never get tricked in the real world. Ask me a question!"
-        )
-
-    # PLATFORM FEATURES & EDUCATION (AI Confidence Meter, Scores, Website Terminology)
-    elif any(keyword in msg for keyword in ['confidence meter', 'ai confidence', 'what is confidence']):
-        return (
-            "**The AI Confidence Meter** is a special feature on our Results Page. While the Trust Score tells you *how dangerous* a message is, the Confidence Meter tells you *how sure the AI is* about its decision! \n\n"
-            "If the AI sees 3 or 4 clear scam keywords (like 'urgent' and 'password'), the Confidence Meter will be very high (90%+). If the text is weird but doesn't hit many rules, the confidence might be lower."
-        )
-
-    elif any(keyword in msg for keyword in ['what is trust score', 'safety score', 'how does scoring work', 'score meaning']):
-        return (
-            "**Your Trust Score (or Safety Score)** starts at 100% (Perfectly Safe).\n"
-            "Whenever our AI finds something suspicious—like a fake URL, a request for money, or urgent scam words—it subtracts points. \n\n"
-            "- **60-100%**: Low Risk (Safe, but be careful)\n"
-            "- **40-59%**: Medium Risk (Suspicious, verify before trusting)\n"
-            "- **0-39%**: High Risk (Extremely dangerous, delete immediately!)"
-        )
-        
-    elif any(keyword in msg for keyword in ['how to use', 'scan image', 'scan text', 'dashboard', 'features']):
-        return (
-            "**Welcome to the CyberGuard Platform!** Here is how you use it:\n\n"
-            "1. **Text Scanner**: Paste any weird email or SMS you receive. I will look for money requests, urgent words, or fake job offers.\n"
-            "2. **URL Scanner**: Paste a suspicious link before clicking it! I will check if it's a fake clone website.\n"
-            "3. **Image Scanner**: Upload a screenshot of a weird Instagram DM or suspicious payment receipt. I will actually *read* the text inside the image to catch scams!"
-        )
-
-    # DEFAULT FALLBACK
-    else:
-        responses = [
-            "I want to make sure I am giving you the easiest answer! I am trained mostly on how to spot scams and protect your accounts. If you don't know what to ask, try: 'What is a fake job offer?' or 'How do I know if this link is safe?'",
-            "Think of me as your online safety teacher! I don't know the answer to every riddle, but I am an expert in stopping scammers. Could you ask me about 'Crypto Scams' or 'Romance Scams' instead?",
-            "Hmm, that's a bit outside my lesson plan! Could you ask your question in a slightly simpler way? I love answering questions about online safety and how to protect yourself on social media."
-        ]
-        return random.choice(responses)
+    # Iterate through all intents
+    for pattern, response in INTENT_PATTERNS:
+        if pattern.search(msg):
+            return response
+            
+    # If no pattern matched, provide a randomized educational fallback response
+    return random.choice(DEFAULT_RESPONSES)

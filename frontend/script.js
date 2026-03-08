@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = '/api';
 
 // --- Text & URL Scanning ---
 
@@ -342,7 +342,7 @@ async function loadDashboardHistory() {
 
             let html = '';
             data.history.forEach(item => {
-                let colorClass, icon, bg;
+                let colorClass, icon, bg, border;
                 if (item.risk_level === 'High Risk') {
                     colorClass = 'risk-high';
                     icon = 'warning';
