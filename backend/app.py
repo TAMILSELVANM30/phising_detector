@@ -144,7 +144,7 @@ def reset_password():
 # --- OAuth Endpoints (Mocked for Demo) ---
 @app.route('/api/auth/google', methods=['GET'])
 def auth_google():
-    return redirect(f"http://localhost:5000/api/auth/google/callback?mock_token=123")
+    return redirect(f"/api/auth/google/callback?mock_token=123")
 
 @app.route('/api/auth/google/callback', methods=['GET'])
 def auth_google_callback():
@@ -171,7 +171,7 @@ def auth_google_callback():
 
 @app.route('/api/auth/github', methods=['GET'])
 def auth_github():
-    return redirect(f"http://localhost:5000/api/auth/github/callback?mock_token=456")
+    return redirect(f"/api/auth/github/callback?mock_token=456")
 
 @app.route('/api/auth/github/callback', methods=['GET'])
 def auth_github_callback():

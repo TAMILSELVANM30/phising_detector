@@ -1,7 +1,11 @@
 import sqlite3
 import os
 
-DB_PATH = 'database/database.db'
+# Vercel and similar serverless environments only allow writing to /tmp
+if os.environ.get('VERCEL'):
+    DB_PATH = '/tmp/database.db'
+else:
+    DB_PATH = 'database/database.db'
 
 def init_db():
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
