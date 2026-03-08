@@ -14,6 +14,9 @@ import chatbot_engine
 app = Flask(__name__, static_folder='../frontend', static_url_path='')
 CORS(app) # Enable CORS for frontend interactions
 
+# Ensure database and upload folders exist relative to the backend directory
+basedir = os.path.abspath(os.path.dirname(__file__))
+
 # Initialize SQLite database
 db_utils.init_db()
 
@@ -21,11 +24,8 @@ db_utils.init_db()
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', 'mock-google-client-id')
 GITHUB_CLIENT_ID = os.environ.get('GITHUB_CLIENT_ID', 'mock-github-client-id')
 
-app = Flask(__name__, static_folder='../frontend', static_url_path='')
-CORS(app) # Enable CORS for frontend interactions
-
 # Ensure upload directory exists
-UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = os.path.join(basedir, 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
